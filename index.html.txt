@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARTrush Studio | Jasa Landing Page</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts (Inter - Mirip San Francisco Apple) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop') no-repeat center center fixed;
+            background-size: cover;
+            overflow: hidden; /* Mencegah scroll body utama */
+        }
+
+        /* Glassmorphism Utilities */
+        .glass {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .glass-dark {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        /* Custom Scrollbar hide */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Animations */
+        .tab-content {
+            display: none;
+            animation: fadeInScale 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.98) translateY(10px);
+                filter: blur(5px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+                filter: blur(0);
+            }
+        }
+
+        /* Tab Active State mimics Safari Active Tab */
+        .safari-tab {
+            transition: all 0.2s ease;
+        }
+        .safari-tab.active {
+            background-color: white;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            color: #1f2937;
+        }
+        .safari-tab:hover:not(.active) {
+            background-color: rgba(255,255,255,0.4);
+        }
+
+        /* Bento Grid Hover */
+        .bento-card {
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .bento-card:hover {
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+<body class="h-screen w-full flex items-center justify-center p-4 md:p-8">
+
+    <!-- BROWSER WINDOW CONTAINER -->
+    <div class="w-full max-w-6xl h-[90vh] md:h-[85vh] glass rounded-2xl shadow-2xl flex flex-col overflow-hidden relative border border-white/50">
+        
+        <!-- SAFARI TOOLBAR -->
+        <div class="h-14 bg-[#f3f4f6]/90 border-b border-gray-300 flex items-center px-4 space-x-4 shrink-0 z-50">
+            <!-- Window Controls -->
+            <div class="flex space-x-2 group">
+                <div class="w-3 h-3 rounded-full bg-[#ff5f57] border border-[#e0443e] flex items-center justify-center group-hover:after:content-['x'] after:text-[8px] after:text-black/50"></div>
+                <div class="w-3 h-3 rounded-full bg-[#febc2e] border border-[#d89e24] flex items-center justify-center group-hover:after:content-['-'] after:text-[8px] after:text-black/50"></div>
+                <div class="w-3 h-3 rounded-full bg-[#28c840] border border-[#1aab29] flex items-center justify-center group-hover:after:content-['+'] after:text-[8px] after:text-black/50"></div>
+            </div>
+
+            <!-- Navigation / Back Forward -->
+            <div class="flex space-x-4 text-gray-500">
+                <i class="fa-solid fa-chevron-left cursor-pointer hover:text-gray-800"></i>
+                <i class="fa-solid fa-chevron-right cursor-pointer hover:text-gray-800"></i>
+                <i class="fa-solid fa-rotate-right cursor-pointer hover:text-gray-800" onclick="location.reload()"></i>
+            </div>
+
+            <!-- Address Bar / Search -->
+            <div class="flex-1 bg-white/80 rounded-md h-8 flex items-center justify-center text-xs sm:text-sm text-gray-600 shadow-sm border border-gray-200">
+                <i class="fa-solid fa-lock text-[10px] mr-2 text-gray-400"></i>
+                <span class="font-medium">artrush.studio</span>
+            </div>
+
+            <!-- Right Actions -->
+            <div class="flex space-x-3 text-gray-500 text-sm">
+                <i class="fa-solid fa-arrow-up-from-bracket cursor-pointer hover:text-blue-500"></i>
+                <i class="fa-regular fa-clone cursor-pointer hover:text-blue-500"></i>
+            </div>
+        </div>
+
+        <!-- TABS BAR (Navigation) -->
+        <div class="bg-[#e5e7eb]/80 px-2 pt-2 flex space-x-1 shrink-0 overflow-x-auto no-scrollbar">
+            <!-- Tab 1: Home -->
+            <button onclick="switchTab('home')" id="tab-home" class="safari-tab active flex-1 min-w-[100px] max-w-[200px] py-2 px-4 rounded-t-lg text-xs font-medium text-gray-600 flex items-center gap-2">
+                <i class="fa-brands fa-apple text-sm"></i>
+                <span>Beranda</span>
+            </button>
+            <!-- Tab 2: Features -->
+            <button onclick="switchTab('features')" id="tab-features" class="safari-tab flex-1 min-w-[100px] max-w-[200px] py-2 px-4 rounded-t-lg text-xs font-medium text-gray-500 flex items-center gap-2">
+                <i class="fa-solid fa-bolt text-sm"></i>
+                <span>Keunggulan</span>
+            </button>
+            <!-- Tab 3: Pricing -->
+            <button onclick="switchTab('pricing')" id="tab-pricing" class="safari-tab flex-1 min-w-[100px] max-w-[200px] py-2 px-4 rounded-t-lg text-xs font-medium text-gray-500 flex items-center gap-2">
+                <i class="fa-solid fa-tag text-sm"></i>
+                <span>Harga</span>
+            </button>
+             <!-- Tab 4: Contact -->
+             <button onclick="switchTab('contact')" id="tab-contact" class="safari-tab flex-1 min-w-[100px] max-w-[200px] py-2 px-4 rounded-t-lg text-xs font-medium text-gray-500 flex items-center gap-2">
+                <i class="fa-brands fa-whatsapp text-sm"></i>
+                <span>Kontak</span>
+            </button>
+        </div>
+
+        <!-- CONTENT AREA (White Canvas) -->
+        <div class="bg-white flex-1 overflow-y-auto relative no-scrollbar">
+            
+            <!-- TAB 1: HOME -->
+            <div id="content-home" class="tab-content active h-full">
+                <div class="flex flex-col items-center justify-center h-full text-center px-6">
+                    <div class="inline-block px-4 py-1.5 rounded-full bg-gray-100 border border-gray-200 text-xs font-semibold text-gray-500 mb-6 animate-pulse">
+                        New: Paket Kilat 24 Jam ⚡️
+                    </div>
+                    <h1 class="text-5xl md:text-7xl font-bold tracking-tight text-gray-900 mb-6">
+                        Website Impian.<br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-600">Semulus macOS.</span>
+                    </h1>
+                    <p class="text-lg text-gray-500 max-w-xl mb-10 leading-relaxed">
+                        Jasa pembuatan Landing Page profesional oleh <b>ARTrush Studio</b>. 
+                        Tampilan estetik, animasi smooth, dan siap jualan dalam hitungan jam.
+                    </p>
+                    <div class="flex gap-4">
+                        <button onclick="switchTab('pricing')" class="px-8 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-full font-medium transition shadow-lg shadow-blue-500/30 transform hover:scale-105 active:scale-95">
+                            Lihat Harga
+                        </button>
+                        <button onclick="switchTab('features')" class="px-8 py-3 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-full font-medium transition">
+                            Pelajari
+                        </button>
+                    </div>
+                    
+                    <!-- Decorative Element -->
+                    <div class="mt-16 w-full max-w-3xl h-64 bg-gradient-to-t from-gray-50 to-white border-t border-gray-100 rounded-t-3xl relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop" class="w-full h-full object-cover opacity-80 mask-image-gradient" alt="Preview">
+                        <div class="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: KEUNGGULAN (Bento Grid) -->
+            <div id="content-features" class="tab-content p-8 md:p-16 bg-gray-50 min-h-full">
+                <div class="max-w-4xl mx-auto">
+                    <h2 class="text-3xl font-bold mb-8 text-center">Kenapa ARTrush?</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 grid-rows-2 gap-4 h-auto md:h-[500px]">
+                        
+                        <!-- Feature 1: Speed (Large) -->
+                        <div class="bento-card md:col-span-2 row-span-1 bg-white p-8 rounded-3xl shadow-sm border border-gray-200 flex flex-col justify-between overflow-hidden relative">
+                            <div class="z-10">
+                                <div class="w-12 h-12 bg-yellow-100 rounded-2xl flex items-center justify-center mb-4 text-yellow-600">
+                                    <i class="fa-solid fa-bolt text-xl"></i>
+                                </div>
+                                <h3 class="text-2xl font-bold text-gray-900">Pengerjaan Kilat</h3>
+                                <p class="text-gray-500 mt-2">Website Anda live secepat Anda menyeduh kopi. Proses efisien tanpa basa-basi.</p>
+                            </div>
+                            <div class="absolute right-[-20px] bottom-[-20px] opacity-10">
+                                <i class="fa-solid fa-bolt text-9xl"></i>
+                            </div>
+                        </div>
+
+                        <!-- Feature 2: Responsive -->
+                        <div class="bento-card bg-white p-6 rounded-3xl shadow-sm border border-gray-200 flex flex-col items-center text-center justify-center">
+                            <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4 text-blue-600">
+                                <i class="fa-solid fa-mobile-screen text-2xl"></i>
+                            </div>
+                            <h3 class="font-bold text-gray-900">100% Responsif</h3>
+                            <p class="text-xs text-gray-500 mt-1">Sempurna di HP, Tablet, & Desktop.</p>
+                        </div>
+
+                        <!-- Feature 3: Smooth -->
+                        <div class="bento-card bg-gradient-to-br from-purple-600 to-blue-600 p-6 rounded-3xl shadow-lg shadow-blue-500/20 text-white flex flex-col justify-center relative overflow-hidden">
+                            <h3 class="text-xl font-bold z-10">Smooth Transitions</h3>
+                            <p class="text-sm text-blue-100 mt-2 z-10">Animasi sehalus ekosistem Apple. User experience yang memanjakan mata.</p>
+                            <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20"></div>
+                        </div>
+
+                        <!-- Feature 4: Cheap -->
+                        <div class="bento-card md:col-span-2 bg-white p-8 rounded-3xl shadow-sm border border-gray-200 flex items-center gap-6">
+                            <div class="flex-1">
+                                <h3 class="text-2xl font-bold text-gray-900">Mulai 200rb</h3>
+                                <p class="text-gray-500 mt-1">Solusi terbaik untuk UMKM dan Personal Branding tanpa menguras dompet.</p>
+                            </div>
+                            <div class="text-4xl font-bold text-green-500">
+                                IDR 200K
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: PRICING -->
+            <div id="content-pricing" class="tab-content h-full bg-gray-50">
+                <div class="flex flex-col items-center justify-center min-h-full p-8">
+                    <div class="bg-white p-10 rounded-3xl shadow-xl border border-gray-100 max-w-sm w-full relative overflow-hidden">
+                        <!-- Badge -->
+                        <div class="absolute top-0 right-0 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-bl-xl">
+                            POPULAR
+                        </div>
+
+                        <div class="text-center">
+                            <h3 class="text-gray-500 font-medium uppercase tracking-wider text-sm">Starter Pack</h3>
+                            <div class="mt-4 flex items-baseline justify-center">
+                                <span class="text-5xl font-extrabold text-gray-900">200rb</span>
+                                <span class="text-xl text-gray-500">/project</span>
+                            </div>
+                            <p class="mt-4 text-gray-500 text-sm">Cukup untuk membuat bisnis Anda terlihat profesional.</p>
+                        </div>
+
+                        <ul class="mt-8 space-y-4">
+                            <li class="flex items-center">
+                                <i class="fa-solid fa-check text-green-500 mr-3"></i>
+                                <span class="text-gray-700 text-sm">Landing Page 1 Halaman</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fa-solid fa-check text-green-500 mr-3"></i>
+                                <span class="text-gray-700 text-sm">Mobile Responsive</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fa-solid fa-check text-green-500 mr-3"></i>
+                                <span class="text-gray-700 text-sm">Gratis Hosting (GitHub/Vercel)</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fa-solid fa-check text-green-500 mr-3"></i>
+                                <span class="text-gray-700 text-sm">Revisi Ringan 2x</span>
+                            </li>
+                             <li class="flex items-center">
+                                <i class="fa-solid fa-check text-green-500 mr-3"></i>
+                                <span class="text-gray-700 text-sm">Pengerjaan 1-2 Hari</span>
+                            </li>
+                        </ul>
+
+                        <button onclick="window.open('https://wa.me/6282233231356', '_blank')" class="mt-8 w-full bg-black text-white py-3 rounded-xl font-semibold hover:bg-gray-800 transition transform hover:scale-[1.02]">
+                            Pesan Sekarang
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 4: CONTACT -->
+            <div id="content-contact" class="tab-content h-full bg-white">
+                <div class="flex flex-col items-center justify-center h-full text-center px-4">
+                    <div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mb-6 animate-bounce">
+                        <i class="fa-brands fa-whatsapp text-5xl text-green-500"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-2">Siap untuk Upgrade?</h2>
+                    <p class="text-gray-500 mb-8 max-w-md">
+                        Konsultasikan kebutuhan website Anda. Gratis konsultasi, bayar setelah deal.
+                    </p>
+                    
+                    <a href="https://wa.me/6282233231356" target="_blank" class="flex items-center gap-3 px-8 py-4 bg-[#25D366] text-white rounded-full font-bold text-lg hover:bg-[#128C7E] transition shadow-lg shadow-green-500/30">
+                        Chat via WhatsApp
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                    
+                    <p class="mt-8 text-xs text-gray-400">
+                        © 2026 ARTrush Studio. All rights reserved.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT FOR TABS -->
+    <script>
+        function switchTab(tabName) {
+            // 1. Remove active class from all tabs
+            const tabs = document.querySelectorAll('.safari-tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+                tab.classList.add('text-gray-500');
+                tab.classList.remove('text-gray-600');
+            });
+
+            // 2. Hide all content
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // 3. Activate selected tab styling
+            const selectedTab = document.getElementById('tab-' + tabName);
+            selectedTab.classList.add('active');
+            selectedTab.classList.remove('text-gray-500');
+            selectedTab.classList.add('text-gray-600');
+
+            // 4. Show selected content with animation
+            const selectedContent = document.getElementById('content-' + tabName);
+            selectedContent.classList.add('active');
+        }
+    </script>
+</body>
+</html>
